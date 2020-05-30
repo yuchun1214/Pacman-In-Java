@@ -18,8 +18,8 @@ import javax.swing.JFrame;
 public class Map extends JFrame{
 	
 	ArrayList<ArrayList<Dot> >Dots;
-	
-	public Map() throws IOException {
+	ElfBase elftesting;
+	public Map() throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		
 		// Frame Initialize
@@ -28,14 +28,15 @@ public class Map extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setContentPane(new MapBackground());
+		
 		// Dots initialize
 		Dots = new ArrayList<ArrayList<Dot> >();
 		ArrayList<Dot> row;
 		Dot temp;
-		for(int i = 0; i < 570; i += 22) {
+		for(int i = 0; i < 570; i += Constant.SCALE) {
 			row = new ArrayList<Dot>();
-			for(int j = 0; j < 570; j += 22) {
-				temp = new Dot(i, j, 15);
+			for(int j = 0; j < 570; j += Constant.SCALE) {
+				temp = new Dot(i, j,Constant.DIAMETER);
 				row.add(temp);
 				add(temp);
 			}
@@ -50,20 +51,22 @@ public class Map extends JFrame{
 		String config = new String(data, "UTF-8");
 		JSONArray jar = new JSONArray(config);
 		JSONArray temp1;
-		JSONArray temp2;
 		for(int i = 0; i < jar.length(); ++i) {
-			// System.out.println(jar.get(i));
-			temp1 = new JSONArray(jar.get(i).toString()); // Dots.get(jar.get(i))
-			// System.out.println(temp1);
+			temp1 = new JSONArray(jar.get(i).toString());
 			Dots.get(temp1.getInt(0)).get(temp1.getInt(1)).setWall();
 			Dots.get(25 - temp1.getInt(0)).get(temp1.getInt(1)).setWall();
 		}
 		
-		setVisible(true);
-
+		// setup elf
+				setVisible(true);
+		// System.out.print(this.Dots);
+	}
+	
+	public boolean avaliable(int x, int y) {
+		return Dots.get(x).get(y).isOk();		
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
 		Map map = new Map();
 	}

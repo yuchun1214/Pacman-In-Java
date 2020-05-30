@@ -17,17 +17,18 @@ public class Dot extends JComponent {
 	private boolean dot;
 	private boolean sugar;
 	private int diameter;
-	private ImageIcon icon;
 	public Dot(int posx, int posy, int diameter) throws IOException {
 		// TODO Auto-generated constructor stub
 		super();
 		this.dot = true;
-		img = ImageIO.read(new File("src/image/bonus/dot.png")); 
-		this.setLocation(posx, posy);
+		this.ok = true;
 		this.diameter = diameter;
+		this.img = ImageIO.read(new File("src/image/bonus/dot.png")); 
+		
+		this.setLocation(posx, posy);
 		this.setSize(this.diameter, this.diameter);
 		this.setVisible(true);
-		this.icon = new ImageIcon("src/image/bonus/dot.png");
+		
 		this.addMouseListener(new CustomizeMouseEventListener("Mouse Click", this));
 	}
 	
@@ -44,10 +45,6 @@ public class Dot extends JComponent {
 		super.paintComponent(g);
 	}
 	
-	public void setOk(boolean ok) {
-		if(ok)
-			this.ok = ok;
-	}
 	
 	public boolean isOk() {
 		return this.ok;
@@ -55,6 +52,7 @@ public class Dot extends JComponent {
 	
 	public void setWall() {
 		this.dot = false;
+		this.ok = false;
 		repaint();
 	}
 }

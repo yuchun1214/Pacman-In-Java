@@ -28,7 +28,7 @@ public class CustomizeMouseEventListener implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.printf("[%d, %d],\n", this.component.getX() / 22, this.component.getY() / 22);
+		System.out.printf("[%d, %d],\n", this.component.getX() / Constant.SCALE, this.component.getY() / Constant.SCALE);
 	}
 
 	@Override
