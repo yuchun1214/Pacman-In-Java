@@ -1,20 +1,15 @@
 package pacMan;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.awt.*;
-
-import org.json.JSONArray;
-
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+
 public class Blinky extends ElfBase{
-	public void Move(int tx, int ty) throws IOException {
-		int i=0,j=0,k=0;
+	public void Move(int tx, int ty,ElfBase pac) throws IOException {
+		int i=0,j=0,k=0,temp;
+		temp=dir;
+		dir=0;
 		if(state)
 		{
 			if(x==tx) {
@@ -28,9 +23,9 @@ public class Blinky extends ElfBase{
 						if(j==0&&k==0){dir=1;}
 						else if(j==0){dir=3;}
 						else if(k==0){dir=4;}
-						else if(j>k){if(nextdir==3){dir=4;}else{dir=3;}}
-						else if(j<k){if(nextdir==4){dir=3;}else{dir=4;}}
-						else if(j==k){if(nextdir==3){dir=4;}else{dir=3;}}
+						else if(j>k){if(nextdir==3||temp==4){dir=4;}else{dir=3;}}
+						else if(j<k){if(nextdir==4||temp==3){dir=3;}else{dir=4;}}
+						else if(j==k){if(nextdir==3||temp==4){dir=4;}else{dir=3;}}
 					}
 				}
 				else {
@@ -43,9 +38,9 @@ public class Blinky extends ElfBase{
 						if(j==0&&k==0){dir=2;}
 						else if(j==0){dir=3;}
 						else if(k==0){dir=4;}
-						else if(j>k){if(nextdir==3){dir=4;}else{dir=3;}}
-						else if(j<k){if(nextdir==4){dir=3;}else{dir=4;}}
-						else if(j==k){if(nextdir==4){dir=3;}else{dir=4;}}
+						else if(j>k){if(nextdir==3||temp==4){dir=4;}else{dir=3;}}
+						else if(j<k){if(nextdir==4||temp==3){dir=3;}else{dir=4;}}
+						else if(j==k){if(nextdir==4||temp==3){dir=3;}else{dir=4;}}
 					}
 				}
 			}
@@ -61,9 +56,9 @@ public class Blinky extends ElfBase{
 						if(j==0&&k==0){dir=3;}
 						else if(j==0){dir=1;}
 						else if(k==0){dir=2;}
-						else if(j>k){if(nextdir==1){dir=2;}else{dir=1;}}
-						else if(j<k){if(nextdir==2){dir=1;}else{dir=2;}}
-						else if(j==k){if(nextdir==2){dir=1;}else{dir=2;}}
+						else if(j>k){if(nextdir==1||temp==2){dir=2;}else{dir=1;}}
+						else if(j<k){if(nextdir==2||temp==1){dir=1;}else{dir=2;}}
+						else if(j==k){if(nextdir==2||temp==1){dir=1;}else{dir=2;}}
 					}
 				}
 				else
@@ -77,9 +72,9 @@ public class Blinky extends ElfBase{
 						if(j==0&&k==0){dir=4;}
 						else if(j==0){dir=1;}
 						else if(k==0){dir=2;}
-						else if(j>k){if(nextdir==1){dir=2;}else{dir=1;}}
-						else if(j<k){if(nextdir==2){dir=1;}else{dir=2;}}
-						else if(j==k){if(nextdir==1){dir=2;}else{dir=1;}}
+						else if(j>k){if(nextdir==1||temp==2){dir=2;}else{dir=1;}}
+						else if(j<k){if(nextdir==2||temp==1){dir=1;}else{dir=2;}}
+						else if(j==k){if(nextdir==1||temp==2){dir=2;}else{dir=1;}}
 					}
 				}
 			}
@@ -94,9 +89,9 @@ public class Blinky extends ElfBase{
 						for(i=x-1;map.avaliable(i,y);i--){++k;if(map.avaliable(i,y+1)){break;}}
 						if(j==0){dir=3;}
 						else if(k==0){dir=1;}
-						else if(j>k){if(nextdir==3){dir=1;}else{dir=3;}}
-						else if(j<k){if(nextdir==1){dir=3;}else{dir=1;}}
-						else if(j==k){if(nextdir==3){dir=1;}else{dir=3;}}
+						else if(j>k){if(nextdir==3||temp==1){dir=1;}else{dir=3;}}
+						else if(j<k){if(nextdir==1||temp==3){dir=3;}else{dir=1;}}
+						else if(j==k){if(nextdir==3||temp==1){dir=1;}else{dir=3;}}
 					}
 				}
 				else {
@@ -108,9 +103,9 @@ public class Blinky extends ElfBase{
 						for(i=x-1;map.avaliable(i,y);i--){++k;if(map.avaliable(i,y+1)){break;}}
 						if(j==0){dir=3;}
 						else if(k==0){dir=1;}
-						else if(j>k){if(nextdir==3){dir=1;}else{dir=3;}}
-						else if(j<k){if(nextdir==1){dir=3;}else{dir=1;}}
-						else if(j==k){if(nextdir==1){dir=3;}else{dir=1;}}
+						else if(j>k){if(nextdir==3||temp==1){dir=1;}else{dir=3;}}
+						else if(j<k){if(nextdir==1||temp==3){dir=3;}else{dir=1;}}
+						else if(j==k){if(nextdir==1||temp==3){dir=3;}else{dir=1;}}
 					}
 				}
 			}//人在鬼右下
@@ -125,9 +120,9 @@ public class Blinky extends ElfBase{
 						for(i=x-1;map.avaliable(i,y);i--){++k;if(map.avaliable(i,y-1)){break;}}
 						if(j==0){dir=3;}
 						else if(k==0){dir=2;}
-						else if(j>k){if(nextdir==3){dir=2;}else{dir=3;}}
-						else if(j<k){if(nextdir==2){dir=3;}else{dir=2;}}
-						else if(j==k){if(nextdir==2){dir=3;}else{dir=2;}}
+						else if(j>k){if(nextdir==3||temp==2){dir=2;}else{dir=3;}}
+						else if(j<k){if(nextdir==2||temp==3){dir=3;}else{dir=2;}}
+						else if(j==k){if(nextdir==2||temp==3){dir=3;}else{dir=2;}}
 					}
 				}
 				else {
@@ -139,9 +134,9 @@ public class Blinky extends ElfBase{
 						for(i=x-1;map.avaliable(i,y);i--){++k;if(map.avaliable(i,y-1)){break;}}
 						if(j==0){dir=3;}
 						else if(k==0){dir=2;}
-						else if(j>k){if(nextdir==3){dir=2;}else{dir=3;}}
-						else if(j<k){if(nextdir==2){dir=3;}else{dir=2;}}
-						else if(j==k){if(nextdir==3){dir=2;}else{dir=3;}}
+						else if(j>k){if(nextdir==3||temp==2){dir=2;}else{dir=3;}}
+						else if(j<k){if(nextdir==2||temp==3){dir=3;}else{dir=2;}}
+						else if(j==k){if(nextdir==3||temp==2){dir=2;}else{dir=3;}}
 					}
 				}
 			}//人在鬼右上
@@ -156,9 +151,9 @@ public class Blinky extends ElfBase{
 						for(i=y+1;map.avaliable(x,i);i++){++k;if(map.avaliable(x-1,i)){break;}}
 						if(j==0){dir=2;}
 						else if(k==0){dir=4;}
-						else if(j>k){if(nextdir==2){dir=4;}else{dir=2;}}
-						else if(j<k){if(nextdir==4){dir=2;}else{dir=4;}}
-						else if(j==k){if(nextdir==2){dir=4;}else{dir=2;}}
+						else if(j>k){if(nextdir==2||temp==4){dir=4;}else{dir=2;}}
+						else if(j<k){if(nextdir==4||temp==2){dir=2;}else{dir=4;}}
+						else if(j==k){if(nextdir==2||temp==4){dir=4;}else{dir=2;}}
 					}
 				}
 				else {
@@ -170,9 +165,9 @@ public class Blinky extends ElfBase{
 						for(i=y+1;map.avaliable(x,i);i++){++k;if(map.avaliable(x-1,i)){break;}}
 						if(j==0){dir=2;}
 						else if(k==0){dir=4;}
-						else if(j>k){if(nextdir==2){dir=4;}else{dir=2;}}
-						else if(j<k){if(nextdir==4){dir=2;}else{dir=4;}}
-						else if(j==k){if(nextdir==4){dir=2;}else{dir=4;}}
+						else if(j>k){if(nextdir==2||temp==4){dir=4;}else{dir=2;}}
+						else if(j<k){if(nextdir==4||temp==2){dir=2;}else{dir=4;}}
+						else if(j==k){if(nextdir==4||temp==2){dir=2;}else{dir=4;}}
 					}
 				}
 			}//人在鬼左上
@@ -187,9 +182,9 @@ public class Blinky extends ElfBase{
 						for(i=x+1;map.avaliable(i,y);i++){++k;if(map.avaliable(i,y+1)){break;}}
 						if(j==0){dir=4;}
 						else if(k==0){dir=1;}
-						else if(j>k){if(nextdir==4){dir=1;}else{dir=4;}}
-						else if(j<k){if(nextdir==1){dir=4;}else{dir=1;}}
-						else if(j==k){if(nextdir==4){dir=1;}else{dir=4;}}
+						else if(j>k){if(nextdir==4||temp==1){dir=1;}else{dir=4;}}
+						else if(j<k){if(nextdir==1||temp==4){dir=4;}else{dir=1;}}
+						else if(j==k){if(nextdir==4||temp==1){dir=1;}else{dir=4;}}
 					}
 				}
 				else {
@@ -201,9 +196,9 @@ public class Blinky extends ElfBase{
 						for(i=x+1;map.avaliable(i,y);i++){++k;if(map.avaliable(i,y+1)){break;}}
 						if(j==0){dir=4;}
 						else if(k==0){dir=1;}
-						else if(j>k){if(nextdir==4){dir=1;}else{dir=4;}}
-						else if(j<k){if(nextdir==1){dir=4;}else{dir=1;}}
-						else if(j==k){if(nextdir==4){dir=1;}else{dir=4;}}
+						else if(j>k){if(nextdir==4||temp==1){dir=1;}else{dir=4;}}
+						else if(j<k){if(nextdir==1||temp==4){dir=4;}else{dir=1;}}
+						else if(j==k){if(nextdir==4||temp==1){dir=1;}else{dir=4;}}
 					}
 				}
 			}//人在鬼左下
@@ -211,82 +206,130 @@ public class Blinky extends ElfBase{
 				case 1:
 					if(map.avaliable(x,y-1))
 					{
-						Thread thread = new Thread(new Anime(this,1));
+						Image img1=ImageIO.read(new File("src/image/ghost/RED_U.png"));
+						Image img2=ImageIO.read(new File("src/image/ghost/RED_U_moving.png"));
+						Thread thread = new Thread(new Anime(this,1,img1,img2));
 						thread.start();
 						try{thread.join();}
 						catch (InterruptedException e) {
 							e.printStackTrace();
 							}
-						//y--;
-						//setLocation(x*Constant.SCALE, y*Constant.SCALE);
-						img = ImageIO.read(new File("src/image/ghost/YELLOW_D.png"));
 					}
 					break;
 				case 2:
 					if(map.avaliable(x,y+1))
 					{
-						Thread thread = new Thread(new Anime(this,2));
+						Image img1=ImageIO.read(new File("src/image/ghost/RED_D.png"));
+						Image img2=ImageIO.read(new File("src/image/ghost/RED_D_moving.png"));
+						Thread thread = new Thread(new Anime(this,2,img1,img2));
 						thread.start();
 						try{thread.join();}
 						catch (InterruptedException e) {
 							e.printStackTrace();
 							}
-						//y++;
-						//setLocation(x*Constant.SCALE, y*Constant.SCALE);
-						img = ImageIO.read(new File("src/image/ghost/YELLOW_D.png"));
 					}
 					break;
 				case 3:
 					if(map.avaliable(x-1,y))
 					{
-						Thread thread = new Thread(new Anime(this,3));
+						Image img1=ImageIO.read(new File("src/image/ghost/RED_L.png"));
+						Image img2=ImageIO.read(new File("src/image/ghost/RED_L_moving.png"));
+						Thread thread = new Thread(new Anime(this,3,img1,img2));
 						thread.start();
 						try{thread.join();}
 						catch (InterruptedException e) {
 							e.printStackTrace();
 							}
-						//x--;
-						//setLocation(x*Constant.SCALE, y*Constant.SCALE);
-						img = ImageIO.read(new File("src/image/ghost/YELLOW_D.png"));
 					}
 					break;
 				case 4:
 					if(map.avaliable(x+1,y))
 					{
-						
-						Thread thread = new Thread(new Anime(this,4));
+						Image img1=ImageIO.read(new File("src/image/ghost/RED_R.png"));
+						Image img2=ImageIO.read(new File("src/image/ghost/RED_R_moving.png"));
+						Thread thread = new Thread(new Anime(this,4,img1,img2));
 						thread.start();
 						try{thread.join();}
 						catch (InterruptedException e) {
 							e.printStackTrace();
 							}
-						//x++;
-						//setLocation(x*Constant.SCALE, y*Constant.SCALE);
-						img = ImageIO.read(new File("src/image/ghost/YELLOW_D.png"));
 					}
 					break;
 			}
 		}
 		else {
-			/*
-	        switch(base->direction){
-	        case 1:if(M[base2->situation-15]==1){base2->direction=1;}else if(M[base2->situation-1]==1){base2->direction=3;}else if(M[base2->situation+1]==1){base2->direction=4;} break;
-	        case 2:if(M[base2->situation+15]==1){base2->direction=2;}else if(M[base2->situation-1]==1){base2->direction=3;}else if(M[base2->situation+1]==1){base2->direction=4;} break;
-	        case 3:if(M[base2->situation-1]==1){base2->direction=3;}else if(M[base2->situation-15]==1){base2->direction=1;}else if(M[base2->situation+15]==1){base2->direction=2;} break;
-	        case 4:if(M[base2->situation+1]==1){base2->direction=4;}else if(M[base2->situation+15]==1){base2->direction=2;}else if(M[base2->situation-15]==1){base2->direction=1;} break;
+			
+	        switch(pac.dir){
+	        case 1:if(map.avaliable(x,y-1)){dir=1;}else if(map.avaliable(x-1,y)){dir=3;}else if(map.avaliable(x+1,y)){dir=4;} break;
+	        case 2:if(map.avaliable(x,y+1)){dir=2;}else if(map.avaliable(x-1,y)){dir=3;}else if(map.avaliable(x+1,y)){dir=4;} break;
+	        case 3:if(map.avaliable(x-1,y)){dir=3;}else if(map.avaliable(x,y-1)){dir=1;}else if(map.avaliable(x,y+1)){dir=2;} break;
+	        case 4:if(map.avaliable(x+1,y)){dir=4;}else if(map.avaliable(x,y+1)){dir=2;}else if(map.avaliable(x,y-1)){dir=1;} break;
 	        }
-	        switch(base2->direction){
-	        case 1: base2->situation-=15;(base2->y)-=50;base2->setGeometry(base2->x,base2->y,50,50);base2->nextdir=0;break;
-	        case 2: base2->situation+=15;(base2->y)+=50;base2->setGeometry(base2->x,base2->y,50,50);base2->nextdir=0;break;
-	        case 3: base2->situation--;(base2->x)-=50;base2->setGeometry(base2->x,base2->y,50,50);base2->nextdir=0;break;
-	        case 4: base2->situation++;(base2->x)+=50;base2->setGeometry(base2->x,base2->y,50,50);base2->nextdir=0;break;
-	        }*/
-			//跑
+			switch(dir) 
+			{
+			case 1:
+				if(map.avaliable(x,y-1))
+				{
+					Image img1=ImageIO.read(new File("src/image/ghost/RED_U.png"));
+					Image img2=ImageIO.read(new File("src/image/ghost/RED_U_moving.png"));
+					Thread thread = new Thread(new Anime(this,1,img1,img2));
+					thread.start();
+					try{thread.join();}
+					catch (InterruptedException e) {
+						e.printStackTrace();
+						}
+					nextdir=0;
+				}
+				break;
+			case 2:
+				if(map.avaliable(x,y+1))
+				{
+					Image img1=ImageIO.read(new File("src/image/ghost/RED_D.png"));
+					Image img2=ImageIO.read(new File("src/image/ghost/RED_D_moving.png"));
+					Thread thread = new Thread(new Anime(this,2,img1,img2));
+					thread.start();
+					try{thread.join();}
+					catch (InterruptedException e) {
+						e.printStackTrace();
+						}
+					nextdir=0;
+				}
+				break;
+			case 3:
+				if(map.avaliable(x-1,y))
+				{
+					Image img1=ImageIO.read(new File("src/image/ghost/RED_L.png"));
+					Image img2=ImageIO.read(new File("src/image/ghost/RED_L_moving.png"));
+					Thread thread = new Thread(new Anime(this,3,img1,img2));
+					thread.start();
+					try{thread.join();}
+					catch (InterruptedException e) {
+						e.printStackTrace();
+						}
+					nextdir=0;
+				}
+				break;
+			case 4:
+				if(map.avaliable(x+1,y))
+				{
+					Image img1=ImageIO.read(new File("src/image/ghost/RED_R.png"));
+					Image img2=ImageIO.read(new File("src/image/ghost/RED_R_moving.png"));
+					Thread thread = new Thread(new Anime(this,4,img1,img2));
+					thread.start();
+					try{thread.join();}
+					catch (InterruptedException e) {
+						e.printStackTrace();
+						}
+					nextdir=0;
+				}
+				break;
+		}//跑
+			
 		}
 	}
-	public Blinky(int x , int y,Map map)throws IOException, InterruptedException
+	public Blinky(int x , int y)throws IOException, InterruptedException
 	{
-		super(x,y,"src/image/ghost/Red_D.png",map);
+		super(x,y,"src/image/ghost/Red_U.png");
 	}
 
 }

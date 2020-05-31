@@ -10,6 +10,7 @@ import java.awt.*;
 
 import org.json.JSONArray;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
@@ -18,6 +19,8 @@ public class Map extends JFrame{
 	
 	ArrayList<ArrayList<Dot> >Dots;
 	ElfBase elftesting;
+	public ElfBase elf1,elf2,pac;
+	
 	public Map() throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		
@@ -27,6 +30,17 @@ public class Map extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setContentPane(new MapBackground());
+		// setup elf
+		elf1 = new Blinky(9*Constant.SCALE,9*Constant.SCALE);
+		add(elf1);
+		elf1.x=9;
+		elf1.y=9;
+		elf1.state=true;
+		elf2 = new Pinky(18*Constant.SCALE,16*Constant.SCALE);
+		add(elf2);
+		elf2.x=18;
+		elf2.y=16;
+		elf2.state=true;
 		
 		// Dots initialize
 		Dots = new ArrayList<ArrayList<Dot> >();
@@ -57,7 +71,6 @@ public class Map extends JFrame{
 			Dots.get(25 - temp1.getInt(0)).get(temp1.getInt(1)).setWall();
 		}
 		
-		// setup elf
 		setVisible(true);
 		// System.out.print(this.Dots);
 	}
@@ -65,25 +78,26 @@ public class Map extends JFrame{
 	public boolean avaliable(int x, int y) {
 		return Dots.get(x).get(y).isOk();		
 	}
+	public void play(Map map1) throws IOException, InterruptedException
+	{
+		elf1.mapIn(map1);
+		elf2.mapIn(map1);
 
+		while(elf2.x!=16||elf1.y!=14)
+		{
+
+			elf1.Move(16,14,pac);//需要pac的資訊
+			elf2.Move(1,1,pac);
+			Thread.sleep(220);
+			//吃人 吃點數
+		}
+	}
 	public static void main(String[] args) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
 		
 		Map map = new Map();
-		ElfBase elf1 = new Blinky(9*Constant.SCALE,9*Constant.SCALE,map);
-		map.add(elf1);
-		elf1.x=9;
-		elf1.y=9;
-		elf1.state=true;
-		int j=0;
-		while(elf1.x!=0||elf1.y!=0)
-		{
-			elf1.Move(0,0);
-			Thread.sleep(220);
-			j++;
-			//if(j==3) {break;}
-			//吃人 吃點數
-		}
+		map.play(map);
+
 	}
 
 }

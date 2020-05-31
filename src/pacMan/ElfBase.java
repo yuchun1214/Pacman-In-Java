@@ -15,7 +15,7 @@ public abstract class ElfBase extends JComponent {
 	public boolean state;//pacman:true:無敵，鬼:true=追
 	private int diameter;
 	
-	public ElfBase(int startx, int starty, String filepath,Map map1) throws IOException, InterruptedException {
+	public ElfBase(int startx, int starty, String filepath) throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		super();
 		this.img = ImageIO.read(new File(filepath));
@@ -25,7 +25,6 @@ public abstract class ElfBase extends JComponent {
 		this.setVisible(true);
 		x = startx/22;
 		y=starty/22;
-		map = map1;
 		dir=0;
 		nextdir=0;
 	}
@@ -35,6 +34,9 @@ public abstract class ElfBase extends JComponent {
 		g.drawImage(img, 0, 0, this.diameter, this.diameter, null);
 		
 	}
-	
-	public abstract void Move(int x, int y)throws IOException;
+	public void mapIn(Map map1)
+	{
+		map=map1;
+	}
+	public abstract void Move(int x, int y,ElfBase pac)throws IOException;
 }
