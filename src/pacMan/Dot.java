@@ -28,8 +28,8 @@ public class Dot extends JComponent {
 		this.setLocation(posx, posy);
 		this.setSize(this.diameter, this.diameter);
 		this.setVisible(true);
-		
 		this.addMouseListener(new CustomizeMouseEventListener("Mouse Click", this));
+		//System.out.printf("%d %d\n",posx,posy);
 	}
 	
 	
