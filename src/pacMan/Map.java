@@ -19,7 +19,7 @@ public class Map extends JFrame{
 	
 	ArrayList<ArrayList<Dot> >Dots;
 	ElfBase elftesting;
-	public ElfBase elf1,elf2,pac;
+	public ElfBase elf1,elf2,pac, elf3;
 	
 	public Map() throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
@@ -42,6 +42,10 @@ public class Map extends JFrame{
 		elf2.y=16;
 		elf2.state=true;
 		
+		elf3 = new BlueElf(1*Constant.SCALE, 1*Constant.SCALE);
+		add(elf3);
+		elf3.state=true;
+		
 		// Dots initialize
 		Dots = new ArrayList<ArrayList<Dot> >();
 		ArrayList<Dot> row;
@@ -49,7 +53,7 @@ public class Map extends JFrame{
 		for(int i = 0; i < 570; i += Constant.SCALE) {
 			row = new ArrayList<Dot>();
 			for(int j = 0; j < 570; j += Constant.SCALE) {
-				temp = new Dot(i, j,Constant.DIAMETER);
+				temp = new Dot(i, j,Constant.DOTDIAMETER);
 				row.add(temp);
 				add(temp);
 			}
@@ -78,17 +82,19 @@ public class Map extends JFrame{
 	public boolean avaliable(int x, int y) {
 		return Dots.get(x).get(y).isOk();		
 	}
-	public void play(Map map1) throws IOException, InterruptedException
+	public void play() throws IOException, InterruptedException
 	{
-		elf1.mapIn(map1);
-		elf2.mapIn(map1);
+		elf1.mapIn(this);
+		elf2.mapIn(this);
+		elf3.mapIn(this);
 
 		while(elf2.x!=16||elf1.y!=14)
 		{
 
 			elf1.Move(16,14,pac);//需要pac的資訊
 			elf2.Move(1,1,pac);
-			Thread.sleep(220);
+			elf3.Move(24, 24, pac);
+			Thread.sleep(50);
 			//吃人 吃點數
 		}
 	}
@@ -96,8 +102,9 @@ public class Map extends JFrame{
 		// TODO Auto-generated method stub
 		
 		Map map = new Map();
-		map.play(map);
-
+		map.play();
+		// map.elf3.mapIn(map);
+		// map.elf3.Move(5, 4, map.pac);
 	}
 
 }
