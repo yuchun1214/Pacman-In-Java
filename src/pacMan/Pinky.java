@@ -7,6 +7,10 @@ import javax.imageio.ImageIO;
 
 public class Pinky extends ElfBase{
 	public void Move(int tx, int ty,ElfBase pac) throws IOException {
+		if(this.state) {
+			tx = pac.getX() / 22;
+			ty = pac.getY() / 22;	
+		}
 		tx+=2;
 		ty+=2;
 		int i=0,j=0,k=0,temp;

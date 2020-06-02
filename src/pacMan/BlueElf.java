@@ -221,6 +221,10 @@ public class BlueElf extends ElfBase {
 	public void Move(int x, int y, ElfBase pac) throws IOException{
 		// TODO Auto-generated method stub
 		ArrayList<String> path;
+		if(this.state) {
+			x = pac.getX() / 22;
+			y = pac.getY() / 22;
+		}
 		
 		int currentX = this.getX() / 22;
 		int currentY = this.getY() / 22;

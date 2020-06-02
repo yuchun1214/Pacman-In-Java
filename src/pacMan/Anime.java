@@ -94,11 +94,16 @@ public class Anime implements Runnable{
 			elf.nextdir=3;
 			break;
 		}
-		System.out.println(elf);
+		// System.out.println(elf);
+		
 		for(int i = 1; i < 23; ++i) {
 			try {
 				elf.setLocation(elf.x * Constant.SCALE + i * dirx, elf.y * Constant.SCALE + i * diry);
-				elf.img = images.get(i % images.size());
+				if(elf.state) {
+					elf.img = images.get(i % images.size());
+				}else {
+					elf.img = elf.deadimg;
+				}
 				Thread.sleep(10);
 			} catch(InterruptedException e) {
 				e.printStackTrace();

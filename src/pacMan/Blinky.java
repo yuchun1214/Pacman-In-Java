@@ -7,6 +7,11 @@ import javax.imageio.ImageIO;
 
 public class Blinky extends ElfBase{
 	public void Move(int tx, int ty,ElfBase pac) throws IOException {
+		if(this.state) {
+			tx = pac.getX() / 22;
+			ty = pac.getY() / 22;
+		}
+		
 		int i=0,j=0,k=0,temp;
 		temp=dir;
 		dir=0;

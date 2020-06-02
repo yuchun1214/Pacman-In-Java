@@ -10,6 +10,7 @@ import java.awt.*;
 import java.util.Timer;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 import javax.imageio.ImageIO;
@@ -26,55 +27,97 @@ public class Map extends JFrame{
 	private Timer timer2;
 	private Timer timer3;
 	private Timer timer4;
+	private Timer collisionTimer1;
+	private Timer collisionTimer2;
+	private Timer collisionTimer3;
+	private Timer collisionTimer4;
 	private Timer pacmanTimer;
+	private Timer chasingTimer;
 	private ElfMovingFire EMF1;
 	private ElfMovingFire EMF2;
 	private ElfMovingFire EMF3;
 	private ElfMovingFire EMF4;
 	private ElfMovingFire pacmanEMF;
-	
+	private CollisionDetector CDEf1;
+	private CollisionDetector CDEf2;
+	private CollisionDetector CDEf3;
+	private CollisionDetector CDEf4;
+	private int score;
 	public Map() throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
-		// Frame Initialize
+		// variable initialization
 		super();
-		timer1 = new Timer();
-		timer2 = new Timer();
-		timer3 = new Timer();
-		timer4 = new Timer();
-		pacmanTimer = new Timer();
-		setSize(585, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
-		setContentPane(new MapBackground());
+		this.timer1 = new Timer();
+		this.timer2 = new Timer();
+		this.timer3 = new Timer();
+		this.timer4 = new Timer();
+		this.pacmanTimer = new Timer();
+		this.collisionTimer1 = new Timer();
+		this.collisionTimer2 = new Timer();
+		this.collisionTimer3 = new Timer();
+		this.collisionTimer4 = new Timer();
+		this.chasingTimer = new Timer();
+		
+		this.score = 0;
+		File gameconfig = new File("src/pacman/gameconfig.json");
+		FileInputStream gcf = new FileInputStream(gameconfig);
+		byte[] data = new byte[(int) gameconfig.length()];
+		gcf.read(data);
+		gcf.close();
+		String gConfig = new String(data, "UTF-8");
+		// System.out.println(gConfig);
+		JSONObject gconfig = new JSONObject(gConfig);
+		JSONArray pacman_start_pos = new JSONArray(gconfig.get("pacman_start_pos").toString());
+		JSONArray big_pellet_pos = new JSONArray(gconfig.get("big_pellet_pos").toString());
+		JSONArray elves_pos = new JSONArray(gconfig.get("elf_start_pos").toString());
+		JSONArray elfpos;
+		// Frame Initialize
+		this.setSize(585, 600);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLayout(new BorderLayout());
+		this.setContentPane(new MapBackground());
+		
+		
 		// setup elf
-		elf1 = new Blinky(9*Constant.SCALE,9*Constant.SCALE);
-		add(elf1);
-		elf1.x=9;
-		elf1.y=9;
-		elf1.state=true;
-		elf2 = new Pinky(18*Constant.SCALE,16*Constant.SCALE);
+		elfpos = new JSONArray(elves_pos.get(0).toString());
+		this.elf1 = new Blinky(elfpos.getInt(0)*Constant.SCALE,elfpos.getInt(1)*Constant.SCALE);
+		add(this.elf1);
+		this.elf1.x=9;
+		this.elf1.y=9;
+		this.elf1.state=true;
+		
+		elfpos = new JSONArray(elves_pos.get(1).toString());
+		this.elf2 = new Pinky(elfpos.getInt(0)*Constant.SCALE,elfpos.getInt(1)*Constant.SCALE);
 		add(elf2);
 		elf2.x=18;
 		elf2.y=16;
 		elf2.state=true;
 		
-		elf3 = new YellowElf(1*Constant.SCALE, 1*Constant.SCALE);
+		elfpos = new JSONArray(elves_pos.get(2).toString());
+		this.elf3 = new BlueElf(elfpos.getInt(0)*Constant.SCALE,elfpos.getInt(1)*Constant.SCALE);
 		add(elf3);
 		elf3.state = true;
 		
-		elf4 = new BlueElf(5 * Constant.SCALE, 4 * Constant.SCALE);
+		elfpos = new JSONArray(elves_pos.get(3).toString());
+		this.elf4= new YellowElf(elfpos.getInt(0)*Constant.SCALE,elfpos.getInt(1)*Constant.SCALE);
 		add(elf4);
 		elf4.state = true;
 		
-		pacman = new Pacman(1*Constant.SCALE, 2*Constant.SCALE);
+		pacman = new Pacman(pacman_start_pos.getInt(0)*Constant.SCALE, pacman_start_pos.getInt(1)*Constant.SCALE);
 		add(pacman);
-		pacman.state=false;
+		pacman.state=true;
 		
 		EMF1 = new ElfMovingFire(pacman);
 		EMF2 = new ElfMovingFire(pacman);
 		EMF3 = new ElfMovingFire(pacman);
 		EMF4 = new ElfMovingFire(pacman);
+		CDEf1 = new CollisionDetector(pacman, elf1, this);
+		CDEf2 = new CollisionDetector(pacman, elf2, this);
+		CDEf3 = new CollisionDetector(pacman, elf3, this);
+		CDEf4 = new CollisionDetector(pacman, elf4, this);
 		pacmanEMF = new ElfMovingFire(pacman);
+		
+		  
 		// Dots initialize
 		Dots = new ArrayList<ArrayList<Dot> >();
 		ArrayList<Dot> row;
@@ -89,11 +132,11 @@ public class Map extends JFrame{
 			Dots.add(row);
 		}
 		
-		File file = new File("src/pacMan/mazeconfig.json");
-		FileInputStream fis = new FileInputStream(file);
-		byte[] data = new byte[(int) file.length()];
-		fis.read(data);
-		fis.close();
+		File mazeconfigfile = new File("src/pacMan/mazeconfig.json");
+		FileInputStream mzcff = new FileInputStream(mazeconfigfile);
+		data = new byte[(int) mazeconfigfile.length()];
+		mzcff.read(data);
+		mzcff.close();
 		String config = new String(data, "UTF-8");
 		
 		JSONArray jar = new JSONArray(config);
@@ -102,6 +145,11 @@ public class Map extends JFrame{
 			temp1 = new JSONArray(jar.get(i).toString());
 			Dots.get(temp1.getInt(0)).get(temp1.getInt(1)).setWall();
 			Dots.get(25 - temp1.getInt(0)).get(temp1.getInt(1)).setWall();
+		}
+	
+		for(int i = 0; i < big_pellet_pos.length(); ++i) {
+			temp1 = new JSONArray(big_pellet_pos.get(i).toString());
+			Dots.get(temp1.getInt(0)).get(temp1.getInt(1)).setToSugar();
 		}
 		
 		setVisible(true);
@@ -114,8 +162,39 @@ public class Map extends JFrame{
 	}
 	
 	public boolean avaliable(int x, int y) {
-		return Dots.get(x).get(y).isOk();		
+		try {
+			return Dots.get(x).get(y).isOk();		
+		}catch(java.lang.IndexOutOfBoundsException e) {
+			return false;
+		}
 	}
+
+	
+	public void pacmanWalk(int x, int y) {
+		Dot d = this.Dots.get(x).get(y);
+		if(!d.isEaten()) {
+			if(d.isSugar()) {
+				this.elf1.state = false;
+				this.elf2.state = false;
+				this.elf3.state = false;
+				this.elf4.state = false;
+				this.chasingTimer.schedule(new ChaseTimerTask(this.elf1, this.elf2, this.elf3, this.elf4), 2500);		
+			}
+			this.Dots.get(x).get(y).eaten();
+			// add the score
+		}
+	}
+	
+
+	
+	public void pause() {
+		timer1.cancel();
+		timer2.cancel();
+		timer3.cancel();
+		timer4.cancel();
+		pacmanTimer.cancel();
+	}
+	
 	public void play() throws IOException, InterruptedException
 	{
 		elf1.mapIn(this);
@@ -123,11 +202,17 @@ public class Map extends JFrame{
 		elf3.mapIn(this);
 		elf4.mapIn(this);
 		pacman.mapIn(this);
+		
 		timer1.schedule(EMF1, 0, 100);
 		timer2.schedule(EMF2, 0, 100);
 		timer3.schedule(EMF3, 0, 100);
 		timer4.schedule(EMF4, 0, 100);
+		
 		pacmanTimer.schedule(pacmanEMF, 0, 100);
+		collisionTimer1.schedule(CDEf1, 0, 10);
+		collisionTimer2.schedule(CDEf2, 0, 10);
+		collisionTimer3.schedule(CDEf3, 0, 10);
+		collisionTimer4.schedule(CDEf4, 0, 10);
 		/*
 		while(elf2.x!=16||elf1.y!=14)
 		{

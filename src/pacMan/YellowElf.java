@@ -31,6 +31,11 @@ public class YellowElf extends BlueElf {
 		ArrayList<String> path;
 		int currentX = this.getX() / 22;
 		int currentY = this.getY() / 22;
+		if(this.state) {
+			x = pac.getX() / 22;
+			y = pac.getY() / 22;
+		}
+		
 		int dirX, dirY;
 		int dir = 0;
 		Image img1 = null;

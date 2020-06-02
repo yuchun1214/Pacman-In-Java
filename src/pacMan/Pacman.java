@@ -16,6 +16,7 @@ public class Pacman extends ElfBase implements KeyListener{
 	
 	private ArrayList<ArrayList<Image>> Images = new ArrayList<ArrayList<Image>>();
 	
+	
 	private ArrayList<Image> up_imgs = new ArrayList<Image>();
 	private ArrayList<Image> down_imgs = new ArrayList<Image>();
 	private ArrayList<Image> left_imgs = new ArrayList<Image>();
@@ -39,6 +40,7 @@ public class Pacman extends ElfBase implements KeyListener{
         }
 	}
 
+	
 
 
 	@Override
@@ -49,12 +51,16 @@ public class Pacman extends ElfBase implements KeyListener{
 		int type = 0;
 		Thread thread;
 		if(direction == KeyEvent.VK_UP && this.map.avaliable(currentx, currenty - 1)) {
+			currenty -= 1;
 			type = 1;
 		}else if(direction == KeyEvent.VK_DOWN && this.map.avaliable(currentx, currenty + 1)) {
+			currenty += 1;
 			type = 2;
 		}else if(direction == KeyEvent.VK_RIGHT && this.map.avaliable(currentx + 1, currenty)) {
+			currentx += 1;
 			type = 4;
 		}else if(direction == KeyEvent.VK_LEFT && this.map.avaliable(currentx - 1, currenty)) {
+			currentx -= 1;
 			type = 3;
 		}
 		
@@ -63,6 +69,8 @@ public class Pacman extends ElfBase implements KeyListener{
 		}else {
 			thread = new Thread(new Anime(this, type, Images.get(type - 1)));
 		}
+		
+		this.map.pacmanWalk(currentx, currenty);
 		
 		thread.start();
 		try {
@@ -87,7 +95,7 @@ public class Pacman extends ElfBase implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("key pressed!!");
+		//System.out.println("key pressed!!");
 		this.direction = e.getKeyCode();
 	}
 

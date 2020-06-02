@@ -12,7 +12,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Dot extends JComponent {
-	private Image img;
+	private Image dotImg;
+	private Image sugarImg;
 	private boolean ok;
 	private boolean dot;
 	private boolean sugar;
@@ -22,8 +23,10 @@ public class Dot extends JComponent {
 		super();
 		this.dot = true;
 		this.ok = true;
+		this.sugar = false;
 		this.diameter = diameter;
-		this.img = ImageIO.read(new File("src/image/bonus/dot.png")); 
+		this.dotImg = ImageIO.read(new File("src/image/bonus/dot.png"));
+		this.sugarImg = ImageIO.read(new File("src/image/bonus/lalipop.png"));
 		
 		this.setLocation(posx, posy);
 		this.setSize(this.diameter, this.diameter);
@@ -36,10 +39,33 @@ public class Dot extends JComponent {
 	public void paint(Graphics g) {
 		super.paint(g);
 		if(this.dot == true)
-			g.drawImage(img,  0,  0, this.diameter, this.diameter, null);
+			g.drawImage(this.dotImg,  0,  0, this.diameter, this.diameter, null);
+		else if(this.sugar == true) {
+			g.drawImage(this.sugarImg, 0, 0, this.diameter, this.diameter, null);
+		}
 	}
 	
+	public void setToSugar() {
+		this.dot = false;
+		this.sugar = true;
+		this.repaint();
+	}
 	
+	public boolean isSugar() {
+		return this.sugar;
+	}
+	
+	public boolean isEaten() {
+		return !(this.dot || this.sugar);
+	}
+
+	public void eaten() {
+		System.out.println("eaten is called");
+		this.dot = false;
+		this.sugar = false;
+		// this.remove(this);
+		this.repaint();
+	}
 	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
