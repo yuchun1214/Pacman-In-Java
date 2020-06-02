@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 public abstract class ElfBase extends JComponent {
 	public Image img;
 	public int x,y,dir,nextdir;//x,y:0~25,dir:1~4 上下左右 0:沒有
-	protected Map map;
+	public Map map;
 	public boolean state;//pacman:true:無敵，鬼:true=追
 	private int diameter;
 	

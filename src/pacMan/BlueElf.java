@@ -1,26 +1,62 @@
 package pacMan;
 
+import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 import javax.management.Query;
 
 public class BlueElf extends ElfBase {
 
-	private HashMap<String, Integer> G_Value;
-	private HashMap<String, Integer> F_Value;
-	private HashMap<String, Integer> H_Value;
+	private HashMap<String, Integer> G_Value = new HashMap<String, Integer>();
+	private HashMap<String, Integer> F_Value = new HashMap<String, Integer>();
+	private HashMap<String, Integer> H_Value = new HashMap<String, Integer>();
 	
+	protected Image D;
+	protected Image D_M;
+	
+	protected Image U;
+	protected Image U_M;
+	
+	protected Image L;
+	protected Image L_M;
+	
+	protected Image R;
+	protected Image R_M;
+	
+	// construction for inheritance
+	public BlueElf(int startx, int starty, String filename) throws IOException, InterruptedException{
+		super(startx, starty, filename);
+	}
 	public BlueElf(int startx, int starty) throws IOException, InterruptedException {
 		
 		super(startx, starty, "src/image/ghost/Blue_U.png");
+		this.D = ImageIO.read(new File("src/Image/ghost/Blue_D.png"));
+		this.D_M = ImageIO.read(new File("src/Image/ghost/Blue_D_moving.png"));
+		
+		this.U = ImageIO.read(new File("src/image/ghost/Blue_U.png"));
+		this.U_M = ImageIO.read(new File("src/image/ghost/Blue_U_moving.png"));
+		
+		this.L = ImageIO.read(new File("src/image/ghost/Blue_L.png"));
+		this.L_M = ImageIO.read(new File("src/image/ghost/Blue_L_moving.png"));
+
+		this.R = ImageIO.read(new File("src/image/ghost/Blue_R.png"));
+		this.R_M = ImageIO.read(new File("src/image/ghost/Blue_R_moving.png"));
+
+	
+		
 		// TODO Auto-generated constructor stub
+		/*
 		H_Value = new HashMap<String, Integer>();
 		F_Value = new HashMap<String, Integer>();
 		G_Value = new HashMap<String, Integer>();
+		*/
 	}
 	
 	private int ComputeF(int x, int y, int targetx, int targety, String last) {
@@ -88,7 +124,7 @@ public class BlueElf extends ElfBase {
 					exactPath.add(0, target);
 					target = record.get(target);
 				}
-				System.out.println(exactPath);
+				// System.out.println(exactPath);
 				return exactPath;
 			}
 			
@@ -148,20 +184,60 @@ public class BlueElf extends ElfBase {
 		
 		return path;
 	}
+	
+	public void Animation(int currentX, int currentY, int nextX, int nextY) {
+		int dirX, dirY;
+		Image img1 = null;
+		Image img2 = null;
+		dirX = nextX - currentX;
+		dirY = nextY - currentY;
+		if(dirX == 0 && dirY < 0) { // up
+			img1 = this.U;
+			img2 = this.U_M;
+			dir = 1;
+		}else if(dirX == 0 && dirY > 0) { // down
+			img1 = this.D;
+			img2 = this.D_M;
+			dir = 2;
+		}else if(dirX < 0 && dirY == 0) { // left
+			img1 = this.L;
+			img2 = this.L_M;
+			dir = 3;
+		}else if(dirX > 0 && dirY == 0) { // right
+			img1 = this.R;
+			img2 = this.R_M;
+			dir = 4;
+		}
+		Thread thread = new Thread(new Anime(this,dir,img1,img2));
+		thread.start();
+		try{
+			thread.join();
+		}catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void Move(int x, int y, ElfBase pac) throws IOException{
 		// TODO Auto-generated method stub
 		ArrayList<String> path;
-		if(this.getX() / 22 != x || this.getY() / 22 != y) {
+		
+		int currentX = this.getX() / 22;
+		int currentY = this.getY() / 22;
+		int dirX, dirY;
+		int dir = 0;
+		Image img1 = null;
+		Image img2 = null;
+		
+		if(currentX != x || currentY != y) {
 			path = this.A_Star(x, y);
 			String nextPos = path.get(1);
 			int nextX = Integer.parseInt(nextPos.split("-")[0]);
 			int nextY = Integer.parseInt(nextPos.split("-")[1]);
-			this.setLocation(nextX * Constant.SCALE, nextY * Constant.SCALE);
+			this.Animation(currentX, currentY, nextX, nextY);
 		}
 	}
-	
+	/*
 	public void MoveRight(int unit) {
 		this.setLocation(this.getX() + unit*Constant.SCALE, this.getY());
 	}
@@ -177,5 +253,5 @@ public class BlueElf extends ElfBase {
 	public void MoveDown(int unit) {
 		this.setLocation(this.getX(), this.getY() + unit * Constant.SCALE);
 	}
-
+	*/ 
 }

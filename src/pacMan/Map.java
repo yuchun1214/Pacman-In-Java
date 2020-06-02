@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.*;
+import java.util.Timer;
 
 import org.json.JSONArray;
 
@@ -19,13 +20,28 @@ public class Map extends JFrame{
 	
 	ArrayList<ArrayList<Dot> >Dots;
 	ElfBase elftesting;
-	public ElfBase elf1,elf2,pac, elf3;
+	public ElfBase elf1,elf2,pac, elf3, elf4;
+	private Pacman pacman;
+	private Timer timer1;
+	private Timer timer2;
+	private Timer timer3;
+	private Timer timer4;
+	private Timer pacmanTimer;
+	private ElfMovingFire EMF1;
+	private ElfMovingFire EMF2;
+	private ElfMovingFire EMF3;
+	private ElfMovingFire EMF4;
+	private ElfMovingFire pacmanEMF;
 	
 	public Map() throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
-		
 		// Frame Initialize
 		super();
+		timer1 = new Timer();
+		timer2 = new Timer();
+		timer3 = new Timer();
+		timer4 = new Timer();
+		pacmanTimer = new Timer();
 		setSize(585, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
@@ -42,10 +58,23 @@ public class Map extends JFrame{
 		elf2.y=16;
 		elf2.state=true;
 		
-		elf3 = new BlueElf(1*Constant.SCALE, 1*Constant.SCALE);
+		elf3 = new YellowElf(1*Constant.SCALE, 1*Constant.SCALE);
 		add(elf3);
-		elf3.state=true;
+		elf3.state = true;
 		
+		elf4 = new BlueElf(5 * Constant.SCALE, 4 * Constant.SCALE);
+		add(elf4);
+		elf4.state = true;
+		
+		pacman = new Pacman(1*Constant.SCALE, 2*Constant.SCALE);
+		add(pacman);
+		pacman.state=false;
+		
+		EMF1 = new ElfMovingFire(pacman);
+		EMF2 = new ElfMovingFire(pacman);
+		EMF3 = new ElfMovingFire(pacman);
+		EMF4 = new ElfMovingFire(pacman);
+		pacmanEMF = new ElfMovingFire(pacman);
 		// Dots initialize
 		Dots = new ArrayList<ArrayList<Dot> >();
 		ArrayList<Dot> row;
@@ -76,6 +105,11 @@ public class Map extends JFrame{
 		}
 		
 		setVisible(true);
+		EMF1.addAnElf(elf1);
+		EMF2.addAnElf(elf2);
+		EMF3.addAnElf(elf3);
+		EMF4.addAnElf(elf4);
+		pacmanEMF.addAnElf(pacman);
 		// System.out.print(this.Dots);
 	}
 	
@@ -87,7 +121,14 @@ public class Map extends JFrame{
 		elf1.mapIn(this);
 		elf2.mapIn(this);
 		elf3.mapIn(this);
-
+		elf4.mapIn(this);
+		pacman.mapIn(this);
+		timer1.schedule(EMF1, 0, 100);
+		timer2.schedule(EMF2, 0, 100);
+		timer3.schedule(EMF3, 0, 100);
+		timer4.schedule(EMF4, 0, 100);
+		pacmanTimer.schedule(pacmanEMF, 0, 100);
+		/*
 		while(elf2.x!=16||elf1.y!=14)
 		{
 
@@ -97,6 +138,7 @@ public class Map extends JFrame{
 			Thread.sleep(50);
 			//吃人 吃點數
 		}
+		*/
 	}
 	public static void main(String[] args) throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
