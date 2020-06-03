@@ -70,6 +70,7 @@ public class Map extends JFrame{
 		this.score = 0;
 		this.dotamount = 0;
 		this.eatenDotAmount = 0;
+		
 		File gameconfig = new File("src/pacman/gameconfig.json");
 		FileInputStream gcf = new FileInputStream(gameconfig);
 		byte[] data = new byte[(int) gameconfig.length()];

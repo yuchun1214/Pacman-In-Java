@@ -8,12 +8,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-public abstract class Condition extends JComponent {
+public class Condition extends JComponent {
 	Image loseIconImage;
 	Image winIconImage;
 	Image heart1;
 	Image heart2;
 	Image heart3;
+	
+	public void Condition() throws IOException {
+		this.loadImage();
+	}
 	
 	public void loadImage() throws IOException {
 		this.loseIconImage = ImageIO.read(new File("src/image/win_fail/fail.png"));
@@ -23,6 +27,7 @@ public abstract class Condition extends JComponent {
 		this.heart3 = ImageIO.read(new File("src/image/win_fail/heart3.png"));
 	}
 	public void paint(Graphics g) {
+		super.paint(g);
 		paintLose(g);
 	}
 	public void paintLose(Graphics g) {
