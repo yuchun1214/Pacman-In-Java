@@ -1,6 +1,6 @@
 {
 	"pacman_start_pos":[1,2],
-	"pacman_life" : 3,
+	"pacman_life" : 2,
 	"elf_start_pos" : [
 		[11, 9],
 		[13, 9],
