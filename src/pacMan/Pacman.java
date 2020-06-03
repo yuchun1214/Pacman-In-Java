@@ -21,12 +21,17 @@ public class Pacman extends ElfBase implements KeyListener{
 	private ArrayList<Image> down_imgs = new ArrayList<Image>();
 	private ArrayList<Image> left_imgs = new ArrayList<Image>();
 	private ArrayList<Image> right_imgs = new ArrayList<Image>();
-
 	public Pacman(int startx, int starty) throws IOException, InterruptedException {
 		super(startx, starty, "src/image/pacman/Pacman_D_1.png");
 		this.setFocusable(true);
 		this.addKeyListener(this);
         this.setFocusable(true);
+        lastPos = new int[2];
+        lastPos[0] = startx;
+        lastPos[1] = starty;
+        last2Pos = new int[2];
+        last2Pos[0] = startx;
+        last2Pos[1] = starty;
         String []sufix = "UDLR".split("");
         Image img;
         ArrayList<Image> imgs = new ArrayList<Image>();
@@ -79,6 +84,10 @@ public class Pacman extends ElfBase implements KeyListener{
 		if(type == 0) {
 			thread = new Thread(new Anime(this, type, Images.get(type)));
 		}else {
+			last2Pos[0] = lastPos[0];
+			last2Pos[1] = lastPos[1];
+			lastPos[0] = pos[0];
+			lastPos[1] = pos[1];
 			thread = new Thread(new Anime(this, type, Images.get(type - 1)));
 		}
 		

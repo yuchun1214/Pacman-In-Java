@@ -16,6 +16,10 @@ public abstract class ElfBase extends JComponent {
 	public boolean state;//pacman:true:無敵，鬼:true=追
 	private int diameter;
 	private int startx, starty;
+	public int [] lastPos;
+	public int [] last2Pos;
+
+
 	public ElfBase(int startx, int starty, String filepath) throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		super();
@@ -34,6 +38,12 @@ public abstract class ElfBase extends JComponent {
 	}
 	
 	public void backToStartPos() {
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setLocation(startx, starty);
 		x = startx / 22;
 		y = starty / 22;
