@@ -91,6 +91,8 @@ public class Map extends JFrame{
 		this.setLayout(new BorderLayout());
 		this.setContentPane(new MapBackground());
 		
+		this.showCondition = new Condition();
+		this.add(this.showCondition);
 		
 		// setup elf
 		elfpos = new JSONArray(elves_pos.get(0).toString());

@@ -15,8 +15,11 @@ public class Condition extends JComponent {
 	Image heart2;
 	Image heart3;
 	
-	public void Condition() throws IOException {
+	public Condition() throws IOException {
 		this.loadImage();
+		this.setSize(40, 40);
+		this.setVisible(true);
+		this.setLocation(600, 50);
 	}
 	
 	public void loadImage() throws IOException {
@@ -26,12 +29,9 @@ public class Condition extends JComponent {
 		this.heart2 = ImageIO.read(new File("src/image/win_fail/heart2.png"));
 		this.heart3 = ImageIO.read(new File("src/image/win_fail/heart3.png"));
 	}
-	public void paint(Graphics g) {
-		super.paint(g);
-		paintLose(g);
-	}
-	public void paintLose(Graphics g) {
-		g.drawImage(loseIconImage,10,10,  500,  500,  null);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(loseIconImage, 0, 0,  50,  50,  null);
 	}
 	
 }

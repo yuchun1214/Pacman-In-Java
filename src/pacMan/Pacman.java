@@ -12,7 +12,7 @@ import java.awt.Image;
 
 public class Pacman extends ElfBase implements KeyListener{
 	
-	private int direction;
+	private int direction  = KeyEvent.VK_DOWN;
 	private int lastDirection;
 	
 	private ArrayList<ArrayList<Image>> Images = new ArrayList<ArrayList<Image>>();
@@ -26,10 +26,8 @@ public class Pacman extends ElfBase implements KeyListener{
 		this.setFocusable(true);
 		this.addKeyListener(this);
         this.setFocusable(true);
-        lastPos = new int[2];
         lastPos[0] = startx;
         lastPos[1] = starty;
-        last2Pos = new int[2];
         last2Pos[0] = startx;
         last2Pos[1] = starty;
         String []sufix = "UDLR".split("");

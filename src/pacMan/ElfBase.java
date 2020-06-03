@@ -32,7 +32,11 @@ public abstract class ElfBase extends JComponent {
 		this.startx = startx;
 		this.starty = starty;
 		x = startx/22;
-		y=starty/22;
+		y = starty/22;
+		last2Pos = new int[2];
+        lastPos = new int[2];
+		last2Pos[0] = last2Pos[0] = x;
+		last2Pos[1] = last2Pos[1] = y;
 		dir=0;
 		nextdir=0;
 	}
