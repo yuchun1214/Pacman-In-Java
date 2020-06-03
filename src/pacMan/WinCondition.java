@@ -15,6 +15,7 @@ public class WinCondition extends TimerTask {
 		// System.out.printf("Target : %d, You eat : %d\n", this.map.getDotAmount(), this.map.getEatenDotAmount());
 		if(this.map.getDotAmount() == this.map.getEatenDotAmount()) {
 			System.out.println("YOU WIN!!!!!!!");
+			this.map.showCondition.setToWin();
 			this.map.pause(false);
 		}
 	}

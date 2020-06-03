@@ -14,12 +14,15 @@ public class Condition extends JComponent {
 	Image heart1;
 	Image heart2;
 	Image heart3;
-	
-	public Condition() throws IOException {
+	int times;
+	boolean win;
+	boolean failed;
+	public Condition(int x, int y) throws IOException {
 		this.loadImage();
-		this.setSize(40, 40);
+		this.times = 3;
+		this.setSize(this.times * 20 + 200, 50);
 		this.setVisible(true);
-		this.setLocation(600, 50);
+		this.setLocation(x, y);
 	}
 	
 	public void loadImage() throws IOException {
@@ -29,9 +32,33 @@ public class Condition extends JComponent {
 		this.heart2 = ImageIO.read(new File("src/image/win_fail/heart2.png"));
 		this.heart3 = ImageIO.read(new File("src/image/win_fail/heart3.png"));
 	}
+	
+	public void subtractTimes() {
+		this.times -= 1;
+		// repaint();
+	}
+	
+	public void setToWin() {
+		this.win = true;
+	}
+	
+	public void setToFailed() {
+		this.failed = true;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(loseIconImage, 0, 0,  50,  50,  null);
+		for(int i = 0; i < times; ++i)
+			g.drawImage(this.heart1, i * 20, 0,  20,  20,  null);
+		
+		if(this.win) {
+			g.drawImage(this.winIconImage, this.times * 20 + 40, 0, 50,  50,  null);
+		}
+		
+		if(this.failed) {
+			g.drawImage(this.loseIconImage, 0, 0, 50, 50, null);
+		}
+		
 	}
 	
 }

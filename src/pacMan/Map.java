@@ -23,7 +23,7 @@ public class Map extends JFrame{
 //	private ElfBase elftesting;
 	public ElfBase elf1,elf2,pac, elf3, elf4;
 	private Pacman pacman;
-	private Condition showCondition;
+	public Condition showCondition;
 	private Timer timer1;
 	private Timer timer2;
 	private Timer timer3;
@@ -86,13 +86,15 @@ public class Map extends JFrame{
 		this.pacmanLife = Integer.parseInt(gconfig.get("pacman_life").toString());
 		// Frame Initialize
 		
-		this.setSize(650, 600);
+		this.setSize(650, 650);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		this.setContentPane(new MapBackground());
 		
-		this.showCondition = new Condition();
+		this.showCondition = new Condition(0, 570);
 		this.add(this.showCondition);
+		
+		
 		
 		// setup elf
 		elfpos = new JSONArray(elves_pos.get(0).toString());
@@ -237,6 +239,7 @@ public class Map extends JFrame{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			showCondition.subtractTimes();
 			pacman.backToStartPos();
 			elf1.backToStartPos();
 			elf2.backToStartPos();
@@ -248,6 +251,7 @@ public class Map extends JFrame{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			showCondition.repaint();
 			this.moveStart();
 		}else {
 			// game over!
@@ -258,6 +262,9 @@ public class Map extends JFrame{
 			this.collisionTimer3.cancel();
 			this.collisionTimer4.cancel();
 			this.pause(false);
+			this.showCondition.subtractTimes();
+			this.showCondition.setToFailed();
+			showCondition.repaint();
 		}
 		
 	}

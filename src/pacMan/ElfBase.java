@@ -67,7 +67,6 @@ public abstract class ElfBase extends JComponent {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(img, 0, 0, this.diameter, this.diameter, null);
-		
 	}
 	public void mapIn(Map map1)
 	{
