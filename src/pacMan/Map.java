@@ -1,7 +1,7 @@
 package pacMan;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+//import java.awt.event.KeyAdapter;
+//import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,16 +13,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 
 public class Map extends JFrame{
 	
 	public ArrayList<ArrayList<Dot> >Dots; // should be private but use public is more efficient lol
-	private ElfBase elftesting;
+//	private ElfBase elftesting;
 	public ElfBase elf1,elf2,pac, elf3, elf4;
 	private Pacman pacman;
+	private Condition showCondition;
 	private Timer timer1;
 	private Timer timer2;
 	private Timer timer3;
@@ -34,11 +35,11 @@ public class Map extends JFrame{
 	private Timer pacmanTimer;
 	private Timer chasingTimer;
 	private Timer checkWinTimer;
-	private ElfMovingFire EMF1;
-	private ElfMovingFire EMF2;
-	private ElfMovingFire EMF3;
-	private ElfMovingFire EMF4;
-	private ElfMovingFire pacmanEMF;
+//	private ElfMovingFire EMF1;
+//	private ElfMovingFire EMF2;
+//	private ElfMovingFire EMF3;
+//	private ElfMovingFire EMF4;
+//	private ElfMovingFire pacmanEMF;
 	private CollisionDetector CDEf1;
 	private CollisionDetector CDEf2;
 	private CollisionDetector CDEf3;
@@ -247,6 +248,7 @@ public class Map extends JFrame{
 			this.moveStart();
 		}else {
 			// game over!
+//			showCondition.paint(getGraphics());
 			System.out.println("Game Over!!!");
 			this.collisionTimer1.cancel();
 			this.collisionTimer2.cancel();
@@ -311,7 +313,6 @@ public class Map extends JFrame{
 		/*
 		while(elf2.x!=16||elf1.y!=14)
 		{
-
 			elf1.Move(16,14,pac);//需要pac的資訊
 			elf2.Move(1,1,pac);
 			elf3.Move(24, 24, pac);
