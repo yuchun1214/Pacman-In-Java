@@ -234,11 +234,15 @@ public class BlueElf extends ElfBase {
 		Image img2 = null;
 		
 		if(currentX != x || currentY != y) {
+			
 			path = this.A_Star(x, y);
-			String nextPos = path.get(1);
-			int nextX = Integer.parseInt(nextPos.split("-")[0]);
-			int nextY = Integer.parseInt(nextPos.split("-")[1]);
-			this.Animation(currentX, currentY, nextX, nextY);
+			if(path.size() > 1) {
+				String nextPos = path.get(1);
+				int nextX = Integer.parseInt(nextPos.split("-")[0]);
+				int nextY = Integer.parseInt(nextPos.split("-")[1]);
+				this.Animation(currentX, currentY, nextX, nextY);
+			}
+			
 		}
 	}
 	/*

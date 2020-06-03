@@ -40,6 +40,16 @@ public abstract class ElfBase extends JComponent {
 		this.state = true;
 	}
 	
+	public void beGhost() {
+		this.state = false;
+		this.repaint();
+	}
+	
+	public void beElf() {
+		this.state = true;
+		this.repaint();
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(img, 0, 0, this.diameter, this.diameter, null);

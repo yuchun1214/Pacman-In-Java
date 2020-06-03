@@ -60,7 +60,7 @@ public class Dot extends JComponent {
 	}
 
 	public void eaten() {
-		System.out.println("eaten is called");
+		System.out.printf("[%d, %d] eaten is called\n", this.getX() / 22, this.getY() / 22);
 		this.dot = false;
 		this.sugar = false;
 		// this.remove(this);

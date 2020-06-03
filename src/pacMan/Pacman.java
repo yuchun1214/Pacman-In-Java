@@ -13,9 +13,9 @@ import java.awt.Image;
 public class Pacman extends ElfBase implements KeyListener{
 	
 	private int direction;
+	private int lastDirection;
 	
 	private ArrayList<ArrayList<Image>> Images = new ArrayList<ArrayList<Image>>();
-	
 	
 	private ArrayList<Image> up_imgs = new ArrayList<Image>();
 	private ArrayList<Image> down_imgs = new ArrayList<Image>();
@@ -40,37 +40,47 @@ public class Pacman extends ElfBase implements KeyListener{
         }
 	}
 
-	
+	public int isNextStepOk(int direction, int [] pos) {
+		int type = 0;
+		if(direction == KeyEvent.VK_UP && this.map.avaliable(pos[0], pos[1] - 1)) {
+			type = 1;
+			lastDirection = direction;
+		}else if(direction == KeyEvent.VK_DOWN && this.map.avaliable(pos[0], pos[1] + 1)) {
+			lastDirection = direction;
+			type = 2;
+		}else if(direction == KeyEvent.VK_RIGHT && this.map.avaliable(pos[0] + 1, pos[1])) {
+			lastDirection = direction;
+			type = 4;
+		}else if(direction == KeyEvent.VK_LEFT && this.map.avaliable(pos[0] - 1, pos[1])) {
+			lastDirection = direction;
+			type = 3;
+		}else {
+			return type;
+		}
+		return type;
+	}
 
 
 	@Override
 	public void Move(int x, int y, ElfBase pac) throws IOException {
 		// TODO Auto-generated method stub
-		int currentx = this.getX() / Constant.SCALE;
-		int currenty = this.getY() / Constant.SCALE;
-		int type = 0;
 		Thread thread;
-		if(direction == KeyEvent.VK_UP && this.map.avaliable(currentx, currenty - 1)) {
-			currenty -= 1;
-			type = 1;
-		}else if(direction == KeyEvent.VK_DOWN && this.map.avaliable(currentx, currenty + 1)) {
-			currenty += 1;
-			type = 2;
-		}else if(direction == KeyEvent.VK_RIGHT && this.map.avaliable(currentx + 1, currenty)) {
-			currentx += 1;
-			type = 4;
-		}else if(direction == KeyEvent.VK_LEFT && this.map.avaliable(currentx - 1, currenty)) {
-			currentx -= 1;
-			type = 3;
+		int [] pos = new int[2];
+		pos[0] = this.getX() / Constant.SCALE;
+		pos[1] = this.getY() / Constant.SCALE;
+		
+		int type = isNextStepOk(direction, pos);
+		if(type == 0) { // next step not ok
+			// next step is not ok , so pacman use last direction
+			type = isNextStepOk(lastDirection , pos);
 		}
 		
+		this.map.pacmanWalk(pos[0], pos[1]);
 		if(type == 0) {
 			thread = new Thread(new Anime(this, type, Images.get(type)));
 		}else {
 			thread = new Thread(new Anime(this, type, Images.get(type - 1)));
 		}
-		
-		this.map.pacmanWalk(currentx, currenty);
 		
 		thread.start();
 		try {

@@ -15,11 +15,10 @@ public class ChaseTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-
-		this.elf1.state = true;
-		this.elf2.state = true;
-		this.elf3.state = true;
-		this.elf4.state = true;
+		this.elf1.beElf();
+		this.elf2.beElf();
+		this.elf3.beElf();
+		this.elf4.beElf();
 	}
 
 }

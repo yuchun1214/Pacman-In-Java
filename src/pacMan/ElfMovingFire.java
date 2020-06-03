@@ -8,9 +8,10 @@ public class ElfMovingFire extends TimerTask {
 	private ArrayList<ElfBase> Elves;
 	private ElfBase elf;
 	private ElfBase pacman;
-	public ElfMovingFire(ElfBase pacman) {
+	public ElfMovingFire(ElfBase pacman, ElfBase elf) {
 		// TODO Auto-generated constructor stub
 		this.pacman = pacman;
+		this.elf = elf;
 		Elves = new ArrayList<ElfBase>();
 	}
 	

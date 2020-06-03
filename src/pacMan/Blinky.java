@@ -15,7 +15,7 @@ public class Blinky extends ElfBase{
 		int i=0,j=0,k=0,temp;
 		temp=dir;
 		dir=0;
-		if(state)
+		if(state || !state)
 		{
 			if(x==tx) {
 				if(y<ty) {
