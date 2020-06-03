@@ -13,7 +13,7 @@ import java.awt.Image;
 public class Pacman extends ElfBase implements KeyListener{
 	
 	private int direction  = KeyEvent.VK_DOWN;
-	private int lastDirection;
+	private int lastDirection = KeyEvent.VK_DOWN;
 	
 	private ArrayList<ArrayList<Image>> Images = new ArrayList<ArrayList<Image>>();
 	
@@ -41,6 +41,10 @@ public class Pacman extends ElfBase implements KeyListener{
         	}
         	Images.add(imgs);
         }
+	}
+	
+	public int pacDirect() {
+		return(direction);
 	}
 
 	public int isNextStepOk(int direction, int [] pos) {

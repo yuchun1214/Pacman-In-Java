@@ -20,7 +20,7 @@ public class Condition extends JComponent {
 	public Condition(int x, int y) throws IOException {
 		this.loadImage();
 		this.times = 3;
-		this.setSize(this.times * 20 + 200, 50);
+		this.setSize(656, 50);
 		this.setVisible(true);
 		this.setLocation(x, y);
 	}
@@ -29,8 +29,7 @@ public class Condition extends JComponent {
 		this.loseIconImage = ImageIO.read(new File("src/image/win_fail/fail.png"));
 		this.winIconImage = ImageIO.read(new File("src/image/win_fail/win.png"));
 		this.heart1 = ImageIO.read(new File("src/image/win_fail/heart1.png"));
-		this.heart2 = ImageIO.read(new File("src/image/win_fail/heart2.png"));
-		this.heart3 = ImageIO.read(new File("src/image/win_fail/heart3.png"));
+		this.heart2 = ImageIO.read(new File("src/image/win_fail/emptyheart.png"));
 	}
 	
 	public void subtractTimes() {
@@ -49,7 +48,10 @@ public class Condition extends JComponent {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for(int i = 0; i < times; ++i)
-			g.drawImage(this.heart1, i * 20, 0,  20,  20,  null);
+			g.drawImage(this.heart1, 60 + i * 21, 25,  20,  20,  null);
+		
+		for(int i = 0; i < (3 - times); ++i)
+			g.drawImage(this.heart2, 102 - i * 21, 25,  20,  20,  null);
 		
 		if(this.win) {
 			g.drawImage(this.winIconImage, this.times * 20 + 40, 0, 50,  50,  null);

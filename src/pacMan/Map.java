@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Timer;
 
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 //import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 public class Map extends JFrame{
@@ -49,6 +51,15 @@ public class Map extends JFrame{
 	private int dotamount;
 	private int eatenDotAmount;
 	private int pacmanLife;
+	private JLabel gametitle = new JLabel("Pac-Man");
+	private JLabel scoreTitle = new JLabel("得分計算");
+	private JLabel scoreShow = new JLabel(String.valueOf(this.score));
+	private JLabel explainDot = new JLabel("糖豆10分");
+	private JLabel remainLife = new JLabel("剩餘生命");
+	private JLabel explainLoli = new JLabel("棒棒糖50分");
+	private JLabel explainGhost = new JLabel("鬼魂100分");
+	private JLabel pacDirectionTitle = new JLabel("方向：");
+	private JLabel pacDirection = new JLabel("下");
 	public Map() throws IOException, InterruptedException {
 		// TODO Auto-generated constructor stub
 		// variable initialization
@@ -86,7 +97,7 @@ public class Map extends JFrame{
 		this.pacmanLife = Integer.parseInt(gconfig.get("pacman_life").toString());
 		// Frame Initialize
 		
-		this.setSize(650, 650);
+		this.setSize(565, 650);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		this.setContentPane(new MapBackground());
@@ -94,7 +105,35 @@ public class Map extends JFrame{
 		this.showCondition = new Condition(0, 570);
 		this.add(this.showCondition);
 		
+		gametitle.setBounds(310, 530, 300, 130);
+		gametitle.setFont(new java.awt.Font("chalkdust",1,55));
+		this.add(gametitle);
 		
+		scoreTitle.setBounds(145, 530, 100, 100);
+		scoreTitle.setFont(new java.awt.Font("宋體",1,15));
+		this.add(scoreTitle);
+		
+		scoreShow.setBounds(165, 550, 100, 100);
+		this.add(scoreShow);
+
+		explainDot.setBounds(237, 525, 100, 100);
+		this.add(explainDot);
+		
+		explainLoli.setBounds(225, 545, 100, 100);
+		this.add(explainLoli);
+		
+		explainGhost.setBounds(230, 565, 100, 100);
+		this.add(explainGhost);
+		
+		pacDirection.setBounds(185, 565, 100, 100);
+		this.add(pacDirection);
+		
+		pacDirectionTitle.setBounds(145, 565, 100, 100);
+		this.add(pacDirectionTitle);
+		
+		remainLife.setBounds(61, 530, 100, 100);
+		remainLife.setFont(new java.awt.Font("宋體",1,15));
+		this.add(remainLife);
 		
 		// setup elf
 		elfpos = new JSONArray(elves_pos.get(0).toString());
@@ -207,6 +246,15 @@ public class Map extends JFrame{
 	
 	
 	public void pacmanWalk(int x, int y) {
+		if(pacman.pacDirect() == KeyEvent.VK_DOWN) {
+			pacDirection.setText("下");
+		}else if(pacman.pacDirect() == KeyEvent.VK_UP) {
+			pacDirection.setText("上");
+		}else if(pacman.pacDirect() == KeyEvent.VK_LEFT) {
+			pacDirection.setText("左");
+		}else if(pacman.pacDirect() == KeyEvent.VK_RIGHT) {
+			pacDirection.setText("右");
+		}
 		Dot d = this.Dots.get(x).get(y);
 		if(!d.isEaten()) {
 			if(d.isSugar()) {
@@ -215,18 +263,27 @@ public class Map extends JFrame{
 				this.elf2.beGhost();
 				this.elf3.beGhost();
 				this.elf4.beGhost();
-				this.chasingTimer.schedule(new ChaseTimerTask(this.elf1, this.elf2, this.elf3, this.elf4), 2500);		
+				this.chasingTimer.schedule(new ChaseTimerTask(this.elf1, this.elf2, this.elf3, this.elf4), 2500);
+				this.score += 40;
 			}
 			 d.eaten();
 			 this.eatenDotAmount += 1;
 			// add the score
 			 this.score += 10;
+			 if(this.score > 999) {
+					scoreShow.setBounds(157, 550, 100, 100);
+				}
+			 scoreShow.setText(String.valueOf(this.score));
 		}
 	}
 	
 	
 	public void killGhost() {
 		this.score += 200;
+		if(this.score > 999) {
+			scoreShow.setBounds(157, 550, 100, 100);
+		}
+		scoreShow.setText(String.valueOf(this.score));
 	}
 	
 	public void pacmanIsKilled() {
